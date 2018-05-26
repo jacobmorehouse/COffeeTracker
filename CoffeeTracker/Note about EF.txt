@@ -1,0 +1,4 @@
+﻿To get EF commands to work MAKE SURE to preface them with the .NET Core version:
+EntityFrameworkCore\Add-Migration
+
+

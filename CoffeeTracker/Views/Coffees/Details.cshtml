@@ -1,0 +1,42 @@
+﻿@model CoffeeTracker.Models.Coffee
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Coffee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.recorded)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.recorded)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.consumed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.consumed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CEU)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CEU)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.iced)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.iced)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,45 @@
+﻿@model CoffeeTracker.Models.Coffee
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Coffee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.recorded)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.recorded)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.consumed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.consumed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CEU)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CEU)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.iced)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.iced)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
