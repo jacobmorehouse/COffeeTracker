@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeTracker.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace CoffeeTracker.Controllers
 {
+
+
     public class HomeController : Controller
     {
         //private CoffeeTrackerContext coffeeContext;
@@ -22,12 +25,37 @@ namespace CoffeeTracker.Controllers
         public IActionResult Index()
         {
 
-            //var context = new CoffeeTrackerContext();
-            var topten = (from cof in _context.Coffee
-                            orderby cof.recorded descending
-                            select cof).Take(10);
+            var allcoffee = (from cof in _context.Coffee
+                          orderby cof.recorded descending
+                          select cof);
 
-            ViewBag.topten = topten;
+
+            //Create line dataset 
+            string lineset = "[";
+            foreach (Coffee lsc in allcoffee)
+            {
+                lineset = lineset + @"{x: '" + lsc.consumed + "', ";
+                lineset = lineset + @"y: " + lsc.CEU + "},";
+            }
+            lineset = lineset + "]";
+            ViewBag.lineSet = lineset;
+
+            //Create lineLabels
+            string lineLabels = "[";
+            foreach (Coffee lsc in allcoffee)
+            {
+                lineLabels = lineLabels + @"'" + lsc.consumed + "',";
+            }
+            lineLabels = lineLabels + "]";
+            ViewBag.lineLabels = lineLabels;
+
+
+
+
+
+            ViewBag.coffeeCount = allcoffee.Count();
+            ViewBag.top10 = allcoffee.OrderByDescending(c => c.recorded).Take(10);
+            ViewBag.top1000 = allcoffee.OrderByDescending(c => c.recorded).Take(1000);
             return View();
         }
 
