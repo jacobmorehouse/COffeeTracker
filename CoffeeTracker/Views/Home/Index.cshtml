@@ -8,33 +8,32 @@
 
 
 <div class="row">
-    <h1>COFFEE</h1>
+    <h1>COFFEE Total: @ViewBag.coffeeCount</h1>
 </div>
 
 <div class="row">
-    <div class="col-md-9">
-        <h2>Line graph</h2>
+    <div class="col-md-6">
+        <h2>Daily Trend</h2>
         <canvas id="LineChart" width="400" height="300"></canvas>
     </div>
-    <div class="col-md-3">
-        <h2>Total: @ViewBag.coffeeCount</h2>
-    </div>
-</div>
 
+    <div class="col-md-6">
+        <h2>Iced vs. Hot</h2>
+        <canvas id="pieChart" width="400" height="300"></canvas>
+    </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h2>Pie Iced vs non</h2>
-    </div>
-    <div class="col-md-6">
-        <h2>Bar distibution by day</h2>
-    </div>
 </div>
 
 <br />
+
 <div class="row">
     <div class="col-md-6">
-        <h2>Centered, most recent list</h2>
+        <h2>Bar distibution by day</h2>
+        <canvas id="barChart" width="400" height="300"></canvas>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Recent Coffees</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -69,7 +68,6 @@
 <script src="~/js/ChartJS-2.7.2.js" asp-append-version="true"></script>
 <script>
     var LineChart = $("#LineChart");
-
     var LineChart = new Chart(LineChart, {
         type: 'line',
         data: {
@@ -79,20 +77,10 @@
                 label: 'Label',
                 data: @Html.Raw(ViewBag.lineSet),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(153, 102, 102, 0.5)'
                 ],
                 borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(153, 102, 102,1)'
                 ],
                 borderWidth: 1
             }]
@@ -108,5 +96,23 @@
         responsive: false}
     });
 
+    var pieChart = $("#pieChart");
+    var pieChart = new Chart(pieChart, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [@ViewBag.icedTotal, @ViewBag.hotTotal],
+                backgroundColor: ['rgba(0, 0, 255, .7)', 'rgba(255, 0, 0, .7)']
+            }],
+            labels: ["Iced", "hot"]
+        },
+        options: {
+            responsive: false
+        }
+    });
+
+    var barChart = $("#barChart");
+    //TODO here, add th bar chart when ready (I have the data)
+
+
 </script>
-@ViewBag.lineLabels

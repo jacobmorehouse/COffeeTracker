@@ -49,10 +49,23 @@ namespace CoffeeTracker.Controllers
             lineLabels = lineLabels + "]";
             ViewBag.lineLabels = lineLabels;
 
+            //get totals for the pie chart
+            var icedTotal = (from icedCof in _context.Coffee
+                             where icedCof.iced == true
+                             select icedCof).Count();
+
+            var hotTotal = (from hotCof in _context.Coffee
+                             where hotCof.iced == false
+                             select hotCof).Count();
 
 
+            //get totals by day of week for the bar chart. 
+            var barDays = (from d in _context.Coffee
+                           select d);
 
 
+            ViewBag.hotTotal = hotTotal;
+            ViewBag.icedTotal = icedTotal;
             ViewBag.coffeeCount = allcoffee.Count();
             ViewBag.top10 = allcoffee.OrderByDescending(c => c.recorded).Take(10);
             ViewBag.top1000 = allcoffee.OrderByDescending(c => c.recorded).Take(1000);
