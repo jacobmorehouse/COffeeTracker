@@ -11,6 +11,11 @@ using System.Web;
 namespace CoffeeTracker.Controllers
 {
 
+    public struct trendSctruct
+    {
+        public int CEUsum;
+        public DateTime consumed;
+    }
 
     public class HomeController : Controller
     {
@@ -22,6 +27,12 @@ namespace CoffeeTracker.Controllers
             this._context = context;
         }
 
+        //The class the line dataset is made from
+        public class lineDataPair {
+            public decimal CEUsum;
+            public DateTime ConsumedDate;
+        }
+
         public IActionResult Index()
         {
 
@@ -30,24 +41,60 @@ namespace CoffeeTracker.Controllers
                           select cof);
 
 
-            //Create line dataset 
-            string lineset = "[";
-            foreach (Coffee lsc in allcoffee)
+            //Create line dataset trend
+            int lineDaysBack = 24;
+            ViewBag.trendDays = lineDaysBack;
+            List<lineDataPair> lineDataSet = new List<lineDataPair>();
+
+
+            var CEUandDays = from c in allcoffee
+                             where c.consumed.Date > DateTime.Now.AddDays(-lineDaysBack)
+                             select new
+                             {
+                                 ID = c.ID,
+                                 CEU = c.CEU,
+                                 Consumed = c.consumed.Date
+                             };
+
+            var distinctDates = (from c in CEUandDays
+                                 where c.Consumed.Date > DateTime.Now.AddDays(-lineDaysBack)
+                                 select c.Consumed.Date).Distinct();
+
+            //stack the data into pairs, then into the list
+            foreach (var DD in distinctDates)
             {
-                lineset = lineset + @"{x: '" + lsc.consumed + "', ";
-                lineset = lineset + @"y: " + lsc.CEU + "},";
+                var thisSum = (from c in CEUandDays
+                               where c.Consumed.Date == DD
+                               select c.CEU).Sum(); 
+
+
+                lineDataPair thisPair = new lineDataPair();
+                thisPair.CEUsum = thisSum;
+                thisPair.ConsumedDate = DD;
+                lineDataSet.Add(thisPair);
+            }
+
+            string lineset = "[";
+            foreach (var vds in lineDataSet)
+            {
+                lineset = lineset + @"{x: '" + vds.ConsumedDate + "', ";
+                lineset = lineset + @"y: " + vds.CEUsum + "},";
             }
             lineset = lineset + "]";
             ViewBag.lineSet = lineset;
 
+
             //Create lineLabels
             string lineLabels = "[";
-            foreach (Coffee lsc in allcoffee)
+            foreach (var lsc in lineDataSet)
             {
-                lineLabels = lineLabels + @"'" + lsc.consumed + "',";
+                lineLabels = lineLabels + @"'" + lsc.ConsumedDate + "',";
             }
             lineLabels = lineLabels + "]";
             ViewBag.lineLabels = lineLabels;
+
+
+            //----------------------------------------
 
             //get totals for the pie chart
             var icedTotal = (from icedCof in _context.Coffee
@@ -58,12 +105,35 @@ namespace CoffeeTracker.Controllers
                              where hotCof.iced == false
                              select hotCof).Count();
 
+            //----------------------------------------
+
 
             //get totals by day of week for the bar chart. 
-            var barDays = (from d in _context.Coffee
-                           select d);
+            int[] CountsByDay = new int[7];
+            foreach(Coffee c in allcoffee)
+            {
+                CountsByDay[(int)c.consumed.DayOfWeek] += 1;
+            }
+
+            decimal[] CEUCountsByDay = new decimal[7];
+            
+            foreach (Coffee c in allcoffee)
+            {
+                CEUCountsByDay[(int)c.consumed.DayOfWeek] += c.CEU;
+            }
+            string CEUCountsByDayJSON2 = "[";
+            for (int c = 0; c < CEUCountsByDay.Count(); c++)
+            {
+                CEUCountsByDayJSON2 = CEUCountsByDayJSON2 +  + CountsByDay[c] + ",";
+            }
+            CEUCountsByDayJSON2 = CEUCountsByDayJSON2 + "]";
+
+            //----------------------------------------
 
 
+            ViewBag.CEUCountsByDayJSON2 = CEUCountsByDayJSON2;
+            ViewBag.CountsByDay = CountsByDay;
+            ViewBag.CEUCountsByDay = CEUCountsByDay;
             ViewBag.hotTotal = hotTotal;
             ViewBag.icedTotal = icedTotal;
             ViewBag.coffeeCount = allcoffee.Count();
