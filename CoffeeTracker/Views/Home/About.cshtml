@@ -1,11 +1,19 @@
 ﻿@{
     ViewData["Title"] = "About";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<h1>@ViewData["Title"]</h1>
 
 <h3>How Caffeine Is Tracked</h3>
 <p>While most of my caffeine intake is coffee, that does not account for all of it. The Coffee Equivalency Unit (CEU) is a fictional unit 
     that allows me to work from a singlular identifiable unit. A CEU is roughly equal to 50mg of caffeine, or one shot of espresso / small cup of coffee / half a soda. </p>
 
+<h3>Why?</h3>
+<p>I needed data to work with to try some Entity Framework / Linq techniques and I drink a lot of coffee, so that seemed like a great source of data.</p>
 
+
+<h3>How It Is Recorded</h3>
+<ul>
+    <li>Each individual beverage is logged seperately.</li>
+    <li>The time the beverage is recorded is also recorded, in the event that I want to report on my reporting habbits.</li>
+    <li>I am including other types of beverages like energy drinks (though they are uncommon at this time), however am not including things like chocolate which would have less than a .5 CEU.</li>
+</ul>

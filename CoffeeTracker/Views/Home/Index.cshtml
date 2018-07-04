@@ -17,7 +17,6 @@
         @*lineLabels: @ViewBag.lineLabels   <br /><br />
         lineSet: @ViewBag.lineSet  <br /><br />*@
 
-
         <canvas id="LineChart" width="400" height="300"></canvas>
     </div>
 
@@ -35,6 +34,8 @@
         <h2>Bar distibution by day</h2>
         <canvas id="barChart" width="400" height="300"></canvas>
     </div>
+
+
 
     <div class="col-md-6">
         <h2>Recent Coffees</h2>
@@ -126,6 +127,15 @@
                 backgroundColor: ["#775519", "#775519", "#775519", "#775519", "#775519", "#775519", "#775519", ],
                 data: @ViewBag.CEUCountsByDayJSON2
             }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
         }
         //options: options
     });

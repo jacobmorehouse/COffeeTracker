@@ -42,7 +42,7 @@ namespace CoffeeTracker.Controllers
 
 
             //Create line dataset trend
-            int lineDaysBack = 24;
+            int lineDaysBack = 100;
             ViewBag.trendDays = lineDaysBack;
             List<lineDataPair> lineDataSet = new List<lineDataPair>();
 
@@ -109,11 +109,12 @@ namespace CoffeeTracker.Controllers
 
 
             //get totals by day of week for the bar chart. 
-            int[] CountsByDay = new int[7];
-            foreach(Coffee c in allcoffee)
-            {
-                CountsByDay[(int)c.consumed.DayOfWeek] += 1;
-            }
+            //int[] CountsByDay = new int[7];
+            //foreach(Coffee c in allcoffee)
+            //{
+            //    CountsByDay[(int)c.consumed.DayOfWeek] += 1;
+            //    //Console.WriteLine(c.consumed.DayOfWeek);
+            //}
 
             decimal[] CEUCountsByDay = new decimal[7];
             
@@ -124,7 +125,7 @@ namespace CoffeeTracker.Controllers
             string CEUCountsByDayJSON2 = "[";
             for (int c = 0; c < CEUCountsByDay.Count(); c++)
             {
-                CEUCountsByDayJSON2 = CEUCountsByDayJSON2 +  + CountsByDay[c] + ",";
+                CEUCountsByDayJSON2 = CEUCountsByDayJSON2 +  +CEUCountsByDay[c] + ",";
             }
             CEUCountsByDayJSON2 = CEUCountsByDayJSON2 + "]";
 
@@ -132,8 +133,8 @@ namespace CoffeeTracker.Controllers
 
 
             ViewBag.CEUCountsByDayJSON2 = CEUCountsByDayJSON2;
-            ViewBag.CountsByDay = CountsByDay;
-            ViewBag.CEUCountsByDay = CEUCountsByDay;
+            //ViewBag.CountsByDay = CountsByDay;
+            //ViewBag.CEUCountsByDay = CEUCountsByDay;
             ViewBag.hotTotal = hotTotal;
             ViewBag.icedTotal = icedTotal;
             ViewBag.coffeeCount = allcoffee.Count();
