@@ -88,7 +88,7 @@ namespace CoffeeTracker.Controllers
             string lineLabels = "[";
             foreach (var lsc in lineDataSet)
             {
-                lineLabels = lineLabels + @"'" + lsc.ConsumedDate + "',";
+                lineLabels = lineLabels + @"'" + lsc.ConsumedDate.ToShortDateString() + "',";
             }
             lineLabels = lineLabels + "]";
             ViewBag.lineLabels = lineLabels;

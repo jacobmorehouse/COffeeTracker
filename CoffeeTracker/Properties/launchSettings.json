@@ -12,14 +12,16 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_preventHostingStartup": "True" /* added to stop Application Insignts JM July 4 2018 */
       }
     },
     "CoffeeTracker": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_preventHostingStartup": "True" /* added to stop Application Insignts JM July 4 2018 */
       },
       "applicationUrl": "http://localhost:63225/"
     }
