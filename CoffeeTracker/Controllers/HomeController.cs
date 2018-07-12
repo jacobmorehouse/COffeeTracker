@@ -108,14 +108,6 @@ namespace CoffeeTracker.Controllers
             //----------------------------------------
 
 
-            //get totals by day of week for the bar chart. 
-            //int[] CountsByDay = new int[7];
-            //foreach(Coffee c in allcoffee)
-            //{
-            //    CountsByDay[(int)c.consumed.DayOfWeek] += 1;
-            //    //Console.WriteLine(c.consumed.DayOfWeek);
-            //}
-
             decimal[] CEUCountsByDay = new decimal[7];
             
             foreach (Coffee c in allcoffee)
@@ -133,8 +125,6 @@ namespace CoffeeTracker.Controllers
 
 
             ViewBag.CEUCountsByDayJSON2 = CEUCountsByDayJSON2;
-            //ViewBag.CountsByDay = CountsByDay;
-            //ViewBag.CEUCountsByDay = CEUCountsByDay;
             ViewBag.hotTotal = hotTotal;
             ViewBag.icedTotal = icedTotal;
             ViewBag.coffeeCount = allcoffee.Count();
@@ -158,6 +148,27 @@ namespace CoffeeTracker.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> List()
+        {
+            return View(await _context.Coffee.ToListAsync());
+        }
+
+        public FileContentResult DownloadCSV()
+        {
+
+            var myQuery = from allcoffee in _context.Coffee select allcoffee;
+
+            string csvString = "ID,iced,CEU,consumed,recorded\n";
+
+            foreach (var c in myQuery)
+            {
+                csvString = csvString + c.ID.ToString() + "," + c.iced.ToString() + "," + c.CEU.ToString() + "," + c.consumed.ToString() + "," + c.recorded.ToString() + "\n";
+
+            }
+
+            return File(new System.Text.UTF8Encoding().GetBytes(csvString), "text/csv", "allCoffee.csv");
         }
     }
 }

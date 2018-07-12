@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CoffeeTracker.Models.Coffee>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h2>List</h2>
+
+<a asp-action="DownloadCSV">Download CSV</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.recorded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.consumed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CEU)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.iced)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.recorded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.consumed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CEU)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.iced)
+            </td>
+
+        </tr>
+}
+    </tbody>
+</table>
